@@ -37,8 +37,8 @@ resource "aws_network_acl" "private-nacl" {
      rule_no    = 120
      action     = "allow"
      cidr_block = "10.0.88.0/24"
-     from_port  = 22
-     to_port    = 22
+     from_port  = 1025
+     to_port    = 65535
   }
     tags = {
       Name = "${var.name}-Private-NACL"
@@ -94,7 +94,7 @@ resource "aws_security_group" "db_security" {
   egress {
     from_port   = 0
     to_port     = 0
-    protocol    = "-1"
+    protocol    = -1
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -110,8 +110,12 @@ resource "aws_security_group" "db_security" {
   }
 }
 
+data "template_file" "db_init" {
+  template = file("./scripts/db/init.sh.tpl")
+}
+
 # Launching an Instance
-resource "aws_instance" "app_instance" {
+resource "aws_instance" "db_instance" {
     ami                         = var.db_ami_id
     instance_type               = "t2.micro"
     associate_public_ip_address = true
@@ -121,4 +125,6 @@ resource "aws_instance" "app_instance" {
         Name                    = var.name
     }
     key_name                    = "Aymz_vpc"
+
+    user_data = data.template_file.db_init.rendered
 }

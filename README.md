@@ -16,7 +16,6 @@ This repository will display how to use this project from an engineering point o
 - AWS Credentials
 - pem key
 - Git
-- (http://yourip)
 - Atom
 ```
 

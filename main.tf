@@ -30,13 +30,8 @@ resource "aws_internet_gateway" "igw" {
 #   }
 # }
 
-# Creates the App Tier with all the variables that have been passed to it
-module "app" {
-  source      = "./modules/app_tier"
-  vpc_id      = aws_vpc.app_vpc.id
-  name        = "${var.name}_App"
-  igw_var     = aws_internet_gateway.igw.id
-  ami_id      = var.ami_id
+data "external" "myipaddr" {
+  program = ["bash", "-c", "curl -s 'https://api.ipify.org?format=json'"]
 }
 
 # Creates The DB Tier with all the variable that have been passed to it
@@ -46,6 +41,18 @@ module "db" {
   name        = "${var.name}_DB"
   db_ami_id      = var.db_ami_id
 }
+
+# Creates the App Tier with all the variables that have been passed to it
+module "app" {
+  source      = "./modules/app_tier"
+  vpc_id      = aws_vpc.app_vpc.id
+  name        = "${var.name}_App"
+  igw_var     = aws_internet_gateway.igw.id
+  ami_id      = var.ami_id
+  db_ip = module.db.instance_ip_addr
+  my_ip = data.external.myipaddr.result.ip
+}
+
 
 # ==============================    Definitions   ==============================
 

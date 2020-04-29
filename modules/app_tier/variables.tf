@@ -13,3 +13,11 @@ variable "igw_var" {
 variable "ami_id" {
   description = "The AMI ID for the App"
 }
+
+variable "db_ip" {
+  description = "The DB IP variable"
+}
+
+variable "my_ip" {
+  description = "dynamic my ip"
+}

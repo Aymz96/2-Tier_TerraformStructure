@@ -14,7 +14,7 @@ resource "aws_subnet" "app_subnet" {
 # Creating NACLs
 resource "aws_network_acl" "public-nacl" {
     vpc_id = var.vpc_id
-
+    subnet_ids = [aws_subnet.app_subnet.id]
 
     ingress {
     protocol   = "tcp"
@@ -54,12 +54,12 @@ resource "aws_network_acl" "public-nacl" {
     protocol   = "tcp"
     rule_no    = 140
     action     = "allow"
-    cidr_block = "77.100.100.125/32" # my ip
+    cidr_block = "${var.my_ip}/32" # my ip
     from_port  = 22
     to_port    = 22
   }
     egress {
-   protocol   = "tcp"
+   protocol   = -1
    rule_no    = 100
    action     = "allow"
    cidr_block = "0.0.0.0/0"
@@ -99,17 +99,16 @@ resource "aws_security_group" "app_security" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["77.100.100.125/32"]
+    cidr_blocks = ["${var.my_ip}/32", "10.0.88.0/24"]
   }
 
   ingress {
     description = "inbound rules"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "tcp"
+    from_port  = 1024
+    to_port    = 65535
+    protocol   = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-  }
-
+}
 
   # Default outbound rules for SG is it lets everything out automaticly
   egress {
@@ -145,6 +144,9 @@ resource "aws_route_table_association" "assoc" {
 # Data handler to call the template file (scripts)
 data "template_file" "app_init" {
   template = file("./scripts/app/init.sh.tpl")
+    vars = {
+      db_priv_ip = var.db_ip
+  }
   # The .tpl is similar to .erb in terms of it allows us to interpolate variables into static templates.
   # Making them# The .tpl is similar to .erb in terms of it allows us to interpolate variables into static templates.
   # Making them dynamic
