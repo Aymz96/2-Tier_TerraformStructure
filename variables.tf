@@ -3,15 +3,15 @@
 # }
 
 variable "name" {
-  default = "Aymz_Terraform"
+   default = "Aymz_Terraform"
 }
 
 variable "ami_id" {
-  default = "ami-0f5faf71fc3100cc7"
+   default = "ami-0f5faf71fc3100cc7"
 }
 
 variable "db_ami_id" {
-  default = "ami-09b93004b37b5de75"
+   default = "ami-09b93004b37b5de75"
 }
 
 # variable "gateway_id" {
