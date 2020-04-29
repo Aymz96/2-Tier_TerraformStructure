@@ -1,6 +1,6 @@
 # 2-Tier Terraform Architecture  :computer: :cd:
 
-This repository will display how to use this project from an engineering point of view.
+This repository will display how to use this project from an engineering point of view
 
 - The project consists of a working Nodejs App and a Mongodb, using a 2-Tier network security architecture.
 
