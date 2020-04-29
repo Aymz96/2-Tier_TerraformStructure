@@ -7,3 +7,4 @@ sudo chown -R 1000:1000 "/home/ubuntu/.npm"
 sudo npm install
 node seeds/seed.js
 npm start
+#
