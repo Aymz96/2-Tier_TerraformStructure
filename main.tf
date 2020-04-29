@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 # Create a VPC
-# Resources are the references that exist inside AWS
+# Resources are the references that exist inside AWS.
 
 resource "aws_vpc" "app_vpc" {
   cidr_block  = "10.0.0.0/16"
