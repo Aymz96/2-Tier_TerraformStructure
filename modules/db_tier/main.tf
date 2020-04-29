@@ -1,5 +1,5 @@
 # DB Tier!
-# Move anything to do with the App Tier creation
+# Move anything to do with the App Tier creation.
 
 # Creating the App Tier
 resource "aws_subnet" "db_subnet" {
